@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		65F527F323BF024E00458ACF /* Build UnityFramework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 65F527F423BF024E00458ACF /* Build configuration list for PBXAggregateTarget "Build UnityFramework" */;
+			buildPhases = (
+				65F527F723BF026E00458ACF /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Build UnityFramework";
+			productName = "Build UnityFramework";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		76D8DB1C23A86C9600B83F02 /* UnityFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D8DB1B23A86C9600B83F02 /* UnityFramework.m */; };
 		76D8DB2823A8A58000B83F02 /* UnityAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D8DB2723A8A58000B83F02 /* UnityAppController.m */; };
@@ -14,16 +28,6 @@
 		76DA448F23A78AC200CE76A2 /* UnityFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 76DA448D23A78AC200CE76A2 /* UnityFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76DA449623A78CB700CE76A2 /* NativeCallProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 76DA449523A78C8700CE76A2 /* NativeCallProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		769D113323A8F0FC00BA3B94 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 76DA448123A78AC200CE76A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 76DA448923A78AC200CE76A2;
-			remoteInfo = UnityFramework;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		76D8DB1B23A86C9600B83F02 /* UnityFramework.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnityFramework.m; sourceTree = "<group>"; };
@@ -92,24 +96,6 @@
 		};
 /* End PBXHeadersBuildPhase section */
 
-/* Begin PBXLegacyTarget section */
-		769D112F23A8F0BB00BA3B94 /* Build UnityFramework */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "-f install_ios.mk";
-			buildConfigurationList = 769D113023A8F0BB00BA3B94 /* Build configuration list for PBXLegacyTarget "Build UnityFramework" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = "";
-			dependencies = (
-				769D113423A8F0FC00BA3B94 /* PBXTargetDependency */,
-			);
-			name = "Build UnityFramework";
-			passBuildSettingsInEnvironment = 1;
-			productName = "Build UnityFramework";
-		};
-/* End PBXLegacyTarget section */
-
 /* Begin PBXNativeTarget section */
 		76DA448923A78AC200CE76A2 /* UnityFramework */ = {
 			isa = PBXNativeTarget;
@@ -139,8 +125,8 @@
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Kazuki Horie";
 				TargetAttributes = {
-					769D112F23A8F0BB00BA3B94 = {
-						CreatedOnToolsVersion = 11.2.1;
+					65F527F323BF024E00458ACF = {
+						CreatedOnToolsVersion = 11.3;
 					};
 					76DA448923A78AC200CE76A2 = {
 						CreatedOnToolsVersion = 11.2.1;
@@ -161,7 +147,7 @@
 			projectRoot = "";
 			targets = (
 				76DA448923A78AC200CE76A2 /* UnityFramework */,
-				769D112F23A8F0BB00BA3B94 /* Build UnityFramework */,
+				65F527F323BF024E00458ACF /* Build UnityFramework */,
 			);
 		};
 /* End PBXProject section */
@@ -194,6 +180,23 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
 		};
+		65F527F723BF026E00458ACF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "OUTPUT_DIR=${PROJECT_DIR}/Output\nDERIVED_DIR=${OUTPUT_DIR}/${CONFIGURATION}-derived\nARCHIVE_DIR=${OUTPUT_DIR}/${CONFIGURATION}-archive\nXCFRAMEWORK_DIR=${OUTPUT_DIR}/${CONFIGURATION}-xcframework\n\nrm -rf ${OUTPUT_DIR}\nmkdir -p ${DERIVED_DIR}\nmkdir -p ${ARCHIVE_DIR}\nmkdir -p ${XCFRAMEWORK_DIR}\n\nARCHIVE_FILE_IOS=${ARCHIVE_DIR}/ios.xcarchive\necho \"ARCHIVE_FILE_IOS:${ARCHIVE_FILE_IOS}\"\nARCHIVE_FILE_IOS_SIMULATOR=${ARCHIVE_DIR}/iossimulator.xcarchive\necho \"ARCHIVE_FILE_IOS_SIMULATOR:${ARCHIVE_FILE_IOS_SIMULATOR}\"\n\nxcodebuild archive -scheme ${PROJECT_NAME}  -destination 'platform=iOS,name=TCTC-iPhone8Plus' -archivePath $ARCHIVE_FILE_IOS -derivedDataPath $DERIVED_DIR -sdk iphoneos SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES\n\nxcodebuild archive -scheme ${PROJECT_NAME} -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' -archivePath $ARCHIVE_FILE_IOS_SIMULATOR -derivedDataPath $DERIVED_DIR -sdk iphonesimulator SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES\n\n# create xcframework\n#xcodebuild -create-xcframework -framework $ARCHIVE_FILE_IOS/Products/Library/Frameworks/${PROJECT_NAME}.framework -framework $ARCHIVE_FILE_IOS_SIMULATOR/Products/Library/Frameworks/${PROJECT_NAME}.framework -output $XCFRAMEWORK_DIR/${PROJECT_NAME}.xcframework\n\n#xcodebuild -create-xcframework -framework $ARCHIVE_FILE_IOS/Products/Library/Frameworks/${PROJECT_NAME}.framework -output $XCFRAMEWORK_DIR/${PROJECT_NAME}.xcframework\n\nxcodebuild -create-xcframework -framework $ARCHIVE_FILE_IOS_SIMULATOR/Products/Library/Frameworks/${PROJECT_NAME}.framework -output $XCFRAMEWORK_DIR/${PROJECT_NAME}.xcframework\n\n# open the xcframework directory\nopen ${XCFRAMEWORK_DIR}\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -209,38 +212,32 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		769D113423A8F0FC00BA3B94 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 76DA448923A78AC200CE76A2 /* UnityFramework */;
-			targetProxy = 769D113323A8F0FC00BA3B94 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		769D113123A8F0BB00BA3B94 /* Debug */ = {
+		65F527F523BF024E00458ACF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					x86_64,
+				);
 				CODE_SIGN_STYLE = Automatic;
-				DEBUGGING_SYMBOLS = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				DEVELOPMENT_TEAM = KLPG9KA92W;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Debug;
 		};
-		769D113223A8F0BB00BA3B94 /* Release */ = {
+		65F527F623BF024E00458ACF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					x86_64,
+				);
 				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				DEVELOPMENT_TEAM = KLPG9KA92W;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Release;
 		};
@@ -300,11 +297,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -365,7 +362,7 @@
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -382,20 +379,20 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = UnityFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tctc.sandbox.UnityFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64 i386";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Debug;
 		};
@@ -410,7 +407,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = UnityFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -423,18 +420,18 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64 i386";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s x86_64";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		769D113023A8F0BB00BA3B94 /* Build configuration list for PBXLegacyTarget "Build UnityFramework" */ = {
+		65F527F423BF024E00458ACF /* Build configuration list for PBXAggregateTarget "Build UnityFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				769D113123A8F0BB00BA3B94 /* Debug */,
-				769D113223A8F0BB00BA3B94 /* Release */,
+				65F527F523BF024E00458ACF /* Debug */,
+				65F527F623BF024E00458ACF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
