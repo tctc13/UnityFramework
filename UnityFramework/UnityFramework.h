@@ -49,7 +49,7 @@ __attribute__ ((visibility("default")))
 - (void)registerFrameworkListener:(id<UnityFrameworkListener>)obj;
 - (void)unregisterFrameworkListener:(id<UnityFrameworkListener>)obj;
 - (void)runEmbeddedWithArgc:(int)argc argv:(char*[])argv appLaunchOpts:(NSDictionary*)appLaunchOpts;
-- (void)unloadApplication:(bool)allowReload;
+- (void)unloadApplication;
 @end
 
 #endif /*UnityFramework*/

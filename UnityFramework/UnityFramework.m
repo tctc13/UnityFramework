@@ -50,7 +50,7 @@ UnityFramework* _gUnityFramework = nil;
 {
 }
 
-- (void)unloadApplication:(bool)allowReload {
+- (void)unloadApplication {
     
 }
 @end
