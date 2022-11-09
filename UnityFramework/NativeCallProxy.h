@@ -12,6 +12,7 @@
 @protocol UnityBridgeNativeCallsProtocol
 @required
 - (void)finishAnimation;
+- (void)finishAnimationV2:(NSString *)result;
 @required
 - (NSString *)requestParams;
 @end
